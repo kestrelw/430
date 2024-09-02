@@ -38,16 +38,23 @@ const getJsonXHR = (url, callback) => {
 // MAIN
 // Note: The page is already loaded (that's what <script defer ...> does) 
 // ... so go to town!
-// ... get a reference to "random" button
+// ... get a reference to "random" button 
 // ... get a reference to "results" <div>
 // ... and so on
 
 const button = document.querySelector("#btn-random");
 const resultDiv = document.querySelector("#results");
+
+const resultAuthor = document.querySelector("#author");
+const resultQuote = document.querySelector("#quote");
+
 const jsonUrl = "data/quotes-data.json";
 
 const quoteComponent = json => {
-  resultDiv.innerHTML = randomElement(json).content;
+  //resultDiv.innerHTML = `"<i>${randomElement(json).content}</i>"" <b>- ${randomElement(json).author}</b>`;
+
+  resultAuthor.innerHTML = randomElement(json).author;
+  resultQuote.innerHTML = `"<i>${randomElement(json).content}</i>"`;
 };
 
 button.onclick = () => {
