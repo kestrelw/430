@@ -5,35 +5,35 @@ const randomElement = array => {
   return array[Math.floor(Math.random() * array.length)];
 }
 
-// NOTE: How about implementing const getJsonXHR = (url, callback) => {...}
-// const getJsonXHR = (url, callback) => {
-//   const xhr = new XMLHttpRequest();
-//   xhr.onload = () => {
-//     if(xhr.status == "404"){
-//       console.log(`NOT FOUND: ${url}`);
-//       callback([{content: `NOT FOUND: ${url}`}]);
-//       return;
-//     }
-//     const text = xhr.responseText;
+//NOTE: How about implementing const getJsonXHR = (url, callback) => {...}
+const getJsonXHR = (url, callback) => {
+  const xhr = new XMLHttpRequest();
+  xhr.onload = () => {
+    if(xhr.status == "404"){
+      console.log(`NOT FOUND: ${url}`);
+      callback([{content: `NOT FOUND: ${url}`}]);
+      return;
+    }
+    const text = xhr.responseText;
     
-//     let json;
-//     try{
-//       json = JSON.parse(text);
-//     }
-//     catch(err){
-//       console.log(`ERROR: ${err}`);
-//       //json = {content: `Don't take any wooden nickels!`};
-//       json = {content: `Don't take any wooden nickels!`};
-//     }
-//     finally{
-//       callback(json);
-//     }
-//   };
-//   xhr.open("GET", url);
-//   //add headers here (send request headers?)
-//   xhr.setRequestHeader("Accept","application/json");
-//   xhr.send();
-// };
+    let json;
+    try{
+      json = JSON.parse(text);
+    }
+    catch(err){
+      console.log(`ERROR: ${err}`);
+      //json = {content: `Don't take any wooden nickels!`};
+      json = {content: `Don't take any wooden nickels!`};
+    }
+    finally{
+      callback(json);
+    }
+  };
+  xhr.open("GET", url);
+  //add headers here (send request headers?)
+  xhr.setRequestHeader("Accept","application/json");
+  xhr.send();
+};
 
 const getJsonFetch = async (url,callback) => {
   let json;
@@ -66,9 +66,7 @@ const resultDiv = document.querySelector("#results");
 const resultAuthor = document.querySelector("#author");
 const resultQuote = document.querySelector("#quote");
 
-const jsonUrl = "https://people.rit.edu/~acjvks/fall-2024/services/quote/quote-random.php";
-//https://people.rit.edu/myw4072/430/wang-quotes-app-2/quote-random.php
-//https://people.rit.edu/myw4072/430/wang-quotes-app-2/data/quote-random.php
+const jsonUrl = "http://localhost:3000/quotes";
 
 
 const quoteComponent = ({author, content}) =>{
