@@ -61,6 +61,7 @@ const getJsonFetch = async (url,callback) => {
 // ... and so on
 
 const button = document.querySelector("#btn-random");
+const btnSearch = document.querySelector("#btn-search");
 const resultDiv = document.querySelector("#results");
 
 const resultAuthor = document.querySelector("#author");
@@ -69,7 +70,8 @@ const resultQuote = document.querySelector("#quote");
 const jsonUrl = "http://localhost:3000/quotes";
 
 
-const quoteComponent = ({author, content}) =>{
+const quoteComponent = (json) =>{
+  // console.log(json);
   //let q = randomElement(json);
 
   //resultDiv.innerHTML = `"<i>${randomElement(json).content}</i>"" <b>- ${randomElement(json).author}</b>`;
@@ -79,8 +81,40 @@ const quoteComponent = ({author, content}) =>{
    <span class="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-green-300 via-blue-500 to-purple-600"></span>
 
    <div class="my-4">
-       <h2 class="text-white text-2xl font-bold pb-2" id="author">${author}</h2>
-       <p class="text-gray-300 py-1" id="quote">"<i>${content}</i>"</p>
+       <h2 class="text-white text-2xl font-bold pb-2" id="author">${randomElement(json).author}</h2>
+       <p class="text-gray-300 py-1" id="quote">"<i>${randomElement(json).content}</i>"</p>
+   </div>
+
+   <div class="flex justify-end">
+       <button class="px-2 py-1 text-white border border-gray-200 font-semibold rounded hover:bg-gray-800">Click Me</button>
+   </div>
+  </a>`
+
+};
+
+const quoteSearch = (json) =>{
+  // console.log(json);
+
+  let writer;
+  let quote;
+
+  if(json.length){
+    writer = json[0].author;
+    quote = json[0].content;
+  }
+  else{
+    writer = "";
+    quote = "ERROR: Quote not found!"
+  }
+
+
+  resultDiv.innerHTML = `<a class="relative bg-gray-900 block p-6 border border-gray-100 rounded-lg max-w-sm mx-auto mt-24" href="#">
+      
+   <span class="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-green-300 via-blue-500 to-purple-600"></span>
+
+   <div class="my-4">
+       <h2 class="text-white text-2xl font-bold pb-2" id="author">${writer}</h2>
+       <p class="text-gray-300 py-1" id="quote">"<i>${quote}</i>"</p>
    </div>
 
    <div class="flex justify-end">
@@ -88,10 +122,7 @@ const quoteComponent = ({author, content}) =>{
    </div>
  </a>`
 
-  // resultAuthor.innerHTML = q.author;
-  // resultQuote.innerHTML = `"<i>${q.content}</i>"`;
-
-
+ 
 };
 
 button.onclick = () => {
@@ -99,3 +130,18 @@ button.onclick = () => {
   //getJsonXHR(jsonUrl, quoteComponent);
   getJsonFetch(jsonUrl, quoteComponent);
 };
+
+// don't forget to declare and initialize btnSearch
+btnSearch.onclick = (evt) => {
+  // <form>, don't submit!
+  console.log("btn search");
+  evt.preventDefault();
+  // now grab the `.value` of #input-term
+  const searchTerm = document.querySelector("#input-term").value;
+  // now build the URL to fetch that specific quote
+  const url = "http://localhost:3000/quotes?index="+searchTerm;
+  //console.log(url);
+  // now call `getJsonFetch()`
+  getJsonFetch(url, quoteSearch);
+  
+}
