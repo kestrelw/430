@@ -25,7 +25,7 @@
     <input id="id" name="id" required size="38" readonly><br><br>
     
     <input type="submit" value="Submit">
-</form>
+  </form>
 
   <hr>
 
@@ -52,7 +52,9 @@
   <div id="all-quotes"></div>
   <script>
     const newQuoteForm = document.querySelector("#form-new-quote");
-    let allQuotesEndpoint;
+    const deleteBtn = document.querySelector("#btn-delete");
+    const newDeleteForm = document.querySelector("#delete-id");
+    
 
     //helpers
     const generateNewID = () => crypto.randomUUID();
@@ -63,7 +65,8 @@
         const response = await fetch(url,{
           methor: "GET",
           header: {
-            "Accept": "application/json"
+            "Accept": "application/json",
+            "content-type": "application/json"
           }
         });
         json = await response.json();
@@ -73,6 +76,32 @@
         json = {author: `Can't parse data file '${url}''`}
       }
       callback(json);
+    }
+
+    const deleteQuote = async (url, quoteId, callback) => {
+      let json;
+      let status;
+      try{
+        const response = await fetch(url+"/"+quoteId,{
+          method: "DELETE",
+          headers: {
+            "accept": "application/json",
+            "content-type": "application/json"
+          },
+          //body: JSON.stringify(payload),
+        });
+        json = await response.json();
+        status = `status: ${response.status} : ${response.statusText}`;
+      }
+      catch(error){
+        console.log("ERROR:", error);
+        json = {author: `Can't parse data file '${url}'`};
+      }
+      finally{
+        callback(json, status);
+      }
+
+      showAllQuotes();
     }
 
     const postNewQuote = async (url, payload, callback) => {
@@ -98,7 +127,7 @@
         callback(json, status);
       }
 
-      //showAllQuotes();
+      showAllQuotes();
     }
 
     const postCallback = (json, status) => {
@@ -108,17 +137,28 @@
       document.querySelector("#post-results pre").innerHTML = JSON.stringify(json);
     }
 
-    const allQuotesCallback = (json, status) => {
+    const allQuotesCallback = (json) => {
+      console.log("json", json);
+      json.forEach(element => {
+        document.querySelector("#all-quotes").innerHTML += `<i>"${element.content}"</i> - ${element.author} - (${element.id})<br>`;
+      });
       
     }
 
+    const deleteCallback = (json) => {
+      console.log("json", json);
+      console.log("status", status);
+      document.querySelector("#post-results p").innerHTML = status;
+      document.querySelector("#post-results pre").innerHTML = JSON.stringify(json);
+    }
+    
     const showAllQuotes = () => {
+      document.querySelector("#all-quotes").innerHTML = "";
+
+      let allQuotesEndpoint = "http://localhost:3000/quotes";
       getJsonFetch(allQuotesEndpoint, allQuotesCallback);
     }
-
-    const deleteQuote = async (url, quoteId, callback) => {
-
-    }
+    
 
     //events
     newQuoteForm.onsubmit = evt => {
@@ -141,6 +181,13 @@
       newQuoteForm["author"].value = "";
       newQuoteForm["id"].value = generateNewID;
     };
+
+    deleteBtn.onclick = () => {
+      let allQuotesEndpoint = "http://localhost:3000/quotes";
+      let deleteId = newDeleteForm.value;
+      
+      deleteQuote(allQuotesEndpoint, deleteId, deleteCallback);
+    }
 
     //init - runs once
     newQuoteForm["id"].value = generateNewID();
