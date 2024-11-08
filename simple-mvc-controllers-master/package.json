@@ -1,0 +1,26 @@
+{
+  "name": "simple-mvc-no-templates",
+  "version": "0.0.0",
+  "description": "A simple Express MVC using only static files",
+  "main": "./src/app.js",
+  "scripts": {
+    "start": "node ./src/app.js",
+    "pretest": "eslint ./src --fix",
+    "test": "echo \"tests complete\"",
+    "nodemon": "nodemon --watch ./src ./src/app.js"
+  },
+  "author": "Cody Van De Mark / Austin Willoughby",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "compression": "^1.7.4",
+    "express": "^4.21.1",
+    "serve-favicon": "^2.5.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.31.0",
+    "nodemon": "^3.1.7"
+  }
+}

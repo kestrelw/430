@@ -22,21 +22,9 @@
 
 <hr>
 
-<h2>A Quote</h2>
-
-<p><button id="btn-quote-random">See contents of <kbd>/quotes /random</kbd></button></p>
-<div id="output-quote-random">???</div>
-
-<p><button id="btn-quote-recent">See contents of <kbd>/quotes /recent</kbd></button></p>
-<div id="output-quote-recent">???</div>
-
-<hr>
-
 <h2>A Dank Meme ...</h2>
 
 <img src="../spongegar.png" alt =""width="200" />
-
-
   
 </body>
 <script>
@@ -61,7 +49,7 @@ const getJsonFetch = async (url, callback) => {
 const btnHello = document.querySelector("#btn-hello");
 const outputHello = document.querySelector("#output-hello");
 
-const helloJSONURL = "/api/helloJSON";
+const helloJSONURL = "/helloJSON";
 const helloCallback = json => {
   outputHello.innerHTML = json.message || "No <kbd>.message</kbd> value found!";
 };
@@ -71,32 +59,12 @@ btnHello.onclick = () => getJsonFetch(helloJSONURL, helloCallback);
 const btnTime = document.querySelector("#btn-time");
 const outputTime = document.querySelector("#output-time");
 
-const timeJSONURL = "/api/timeJSON";
+const timeJSONURL = "/timeJSON";
 const timeCallback = json => {
   outputTime.innerHTML = json.time || "No <kbd>.message</kbd> value found!";
 };
 
 btnTime.onclick = () => getJsonFetch(timeJSONURL, timeCallback);
-
-const btnQuoteRand = document.querySelector("#btn-quote-random");
-const outputQuoteRand = document.querySelector("#output-quote-random");
-
-const quoteRandJSONURL = "/quotes/random";
-const quoteRandCallback = json => {
-  outputQuoteRand.innerHTML = `<i>${json.content}</i> - <b>${json.author}</b>` || "No <kbd>.message</kbd> value found!";
-};
-
-btnQuoteRand.onclick = () => getJsonFetch(quoteRandJSONURL, quoteRandCallback);
-
-const btnQuoteRecent = document.querySelector("#btn-quote-recent");
-const outputQuoteRecent = document.querySelector("#output-quote-recent");
-
-const quoteRecentJSONURL = "/quotes/recent";
-const quoteRecentCallback = json => {
-  outputQuoteRecent.innerHTML = `<i>${json.content}</i> - <b>${json.author}</b>` || "No <kbd>.message</kbd> value found!";
-};
-
-btnQuoteRecent.onclick = () => getJsonFetch(quoteRecentJSONURL, quoteRecentCallback);
 
 
 </script>
